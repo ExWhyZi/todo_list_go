@@ -1,0 +1,33 @@
+services:
+  app:
+    image: cosmtrek/air:v1.40.4
+    restart: on-failure
+    container_name: todo_list_app
+    working_dir: /app
+    ports:
+      - 3000:3000 
+    volumes:
+      - .:/app
+    depends_on: 
+      - pg
+
+  pg:
+    image: postgres:latest
+    restart: on-failure
+    container_name: todo_list_pg
+    ports:
+      - 5432:5432 
+    volumes:
+      - ./data/pg:/var/lib/postgresql/data 
+    environment:
+      - POSTGRES_USER=armanheid
+      - POSTGRES_PASSWORD=bozboz123
+      - POSTGRES_DB=todo_list_pg
+
+  adminer:
+    image: adminer
+    restart: on-failure
+    ports:
+      - 8080:8080    
+    depends_on:
+      - pg
